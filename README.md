@@ -38,8 +38,15 @@
         2. 2.3.3.3.4.2 否则以 `e` 为 `reason` 拒绝 `promise`
     4. 2.3.3.4 如果 `then` 不是函数，以 `x` 为参数执行 `promise`
   - 2.3.4 如果 `x` 不为对象或者函数，以 `x` 为参数执行 `promise`
-        
-        
-        
-      
-      
+### 注释
+  1. 平台代码指的是引擎、环境以及 promise 的实施代码。实践中要确保 onFulfilled 和 onRejected 方法异步执行，且应该在 then 方法被调用的那一轮事件循环之后的新执行栈中执行。这个事件队列可以采用“宏任务（macro-task）”机制或者“微任务（micro-task）”机制来实现。由于 promise 的实施代码本身就是平台代码（即都是 JavaScript），故代码自身在处理在处理程序时可能已经包含一个任务调度队列。
+  2. 这里提及了 macrotask 和 microtask 两个概念，这表示异步任务的两种分类。在挂起任务时，JS 引擎会将所有任务按照类别分到这两个队列中，首先在 macrotask 的队列（这个队列也被叫做 task queue）中取出第一个任务，执行完毕后取出 microtask 队列中的所有任务顺序执行；之后再取 macrotask 任务，周而复始，直至两个队列的任务都取完。
+  3. 两个类别的具体分类如下
+  - macro-task: script（整体代码）, setTimeout, setInterval, setImmediate, I/O, UI rendering
+  - micro-task: process.nextTick, Promises（这里指浏览器实现的原生 Promise）, Object.observe, MutationObserver
+### promise弊端
+  1. 延迟问题（涉及到Event Loop）
+  2. promise一旦创建，无法取消，pending状态的时候，无法得知进展到哪一步（比如接口超时）
+  3. promise会吞掉内部抛出的错误，不会反映到外部。如果最后一个then方法里出现错误，无法发现。（可以采取hack形式，在promise构造函数中判断onRejectedCb的数组长度，如果为0，就是没有注册回调，这个时候就抛出错误，某些库实现done方法，它不会返回一个promise对象，且在done()中未经处理的异常不会被promise实例所捕获）
+  4. then方法每次调用都会创建一个新的promise对象，一定程度上造成了内存的浪费
+  

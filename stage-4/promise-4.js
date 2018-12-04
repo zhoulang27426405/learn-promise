@@ -132,7 +132,7 @@ function doSomething() {
 }
 
 function doSomethingElse() {
-  // return this.promise2
+  return this.promise2
 
   // return new promise((resolve, reject) => {
   //   setTimeout(() => {
@@ -155,7 +155,9 @@ function doSomethingElse() {
   //   console.log('xxxx')
   // }
 
-  return 4
+  // return 4
+
+  // return Promise.reject('ES6 promise')
 }
 
 this.promise2 = doSomething().then(doSomethingElse)
