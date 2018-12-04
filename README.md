@@ -1,9 +1,9 @@
 # learn-promise
 ## promise规范
 ### 2.1 promise必须是三种状态之一：pending, fulfilled, rejected
-  - 2.2.1 promise在pending状态下，可以变为fulfilled或者rejected状态
-  - 2.2.2 promise变为fulfilled状态，不能再改变状态，并保存了一个不能改变的value（异步操作的结果）
-  - 2.2.3 promise变为rejected状态，同样不能再改变状态，并保存一个不能改变的reason（通常是一个异常）
+  - 2.1.1 promise在pending状态下，可以变为fulfilled或者rejected状态
+  - 2.1.2 promise变为fulfilled状态，不能再改变状态，并保存了一个不能改变的value（异步操作的结果）
+  - 2.1.3 promise变为rejected状态，同样不能再改变状态，并保存一个不能改变的reason（通常是一个异常）
 ### 2.2 promise必须提供一个then方法 `promise.then(onFulfilled, onRejected)`
   - 2.2.1 `onFulfilled`, `onRejected`均为可选参数，参数如果不是函数，就忽略
   - 2.2.2 `onFulfilled` 如果是函数
