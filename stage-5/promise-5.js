@@ -74,6 +74,10 @@ promise.prototype.then = function(onFulfilled, onRejected) {
   }
 }
 
+// ES2018引入的finally
+promise.prototype.finally = function(callback) {
+  return this.then(callback, callback)
+}
 // promise resolution
 function promiseResolution(promise2, x, resolve, reject) {
   let then
@@ -126,7 +130,7 @@ function promiseResolution(promise2, x, resolve, reject) {
 function doSomething() {
   return new promise((resolve, reject) => {
     setTimeout(() => {
-      resolve('promise done')
+      reject('promise done')
     }, 2000)
   })
 }
@@ -164,5 +168,8 @@ function doSomethingElse() {
   // })
 }
 
-this.promise2 = doSomething().then(doSomethingElse)
-console.log(this.promise2)
+function done() {
+  console.log('done')
+}
+// doSomething().then(done, done)
+doSomething().finally(done)
